@@ -7,18 +7,23 @@ From https://github.com/kevalpatel2106/android-samples/tree/master/Facebook%20Ch
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.hardware.display.DisplayManager;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class TabService extends Service {
 
     private WindowManager mWindowManager;
     private View mTabView;
+    private DisplayMetrics displayMetrics;
+    private int screenWidth, screenHeight;
 
     public TabService() {
     }
@@ -34,6 +39,8 @@ public class TabService extends Service {
         //Inflate the chat head layout we created
         mTabView = LayoutInflater.from(this).inflate(R.layout.layout_tab, null);
 
+        displayMetrics = getResources().getDisplayMetrics();
+
         //Add the view to the window.
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -42,16 +49,20 @@ public class TabService extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
+        screenWidth = displayMetrics.widthPixels;
+        screenHeight = displayMetrics.heightPixels;
+
         //Specify the chat head position
         params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
         params.x = 0;
-        params.y = 100;
+        params.y = screenHeight - 1000;
 
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mTabView, params);
 
         //Set the close button.
+        /*
         ImageView closeButton = (ImageView) mTabView.findViewById(R.id.close_btn);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,11 +70,11 @@ public class TabService extends Service {
                 //close the service and remove the chat head from the window
                 stopSelf();
             }
-        });
+        }); */
 
         //Drag and move chat head using user's touch action.
-        final ImageView tabImage = (ImageView) mTabView.findViewById(R.id.tab_profile_iv);
-        tabImage.setOnTouchListener(new View.OnTouchListener() {
+        final LinearLayout tabLayout = (LinearLayout) mTabView.findViewById(R.id.tab_root);
+        tabLayout.setOnTouchListener(new View.OnTouchListener() {
             private int lastAction;
             private int initialX;
             private int initialY;
@@ -102,7 +113,8 @@ public class TabService extends Service {
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         //Calculate the X and Y coordinates of the view.
-                        params.x = initialX + (int) (event.getRawX() - initialTouchX);
+                        //params.x = initialX + (int) (event.getRawX() - initialTouchX);
+                        params.width = (int) event.getRawX();
                         params.y = initialY + (int) (event.getRawY() - initialTouchY);
 
                         //Update the layout with new X & Y coordinate

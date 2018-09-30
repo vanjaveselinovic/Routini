@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="65dp"
-    android:id="@+id/chat_head_root"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:id="@+id/tab_root"
+    android:layout_width="25dp"
+    android:layout_height="75dp"
+    android:background="@color/colorPrimary"
+    android:clipChildren="true"
+    android:orientation="horizontal">
 
-    <!--Profile image for the chat head.-->
+    <ImageView
+        android:id="@+id/tab_profile_iv"
+        android:layout_width="25dp"
+        android:layout_height="75dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/ic_android_circle"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Next up:"
+        android:textColor="@android:color/white"
+        android:textSize="20dp" />
+
+    <!--Profile image for the chat head.
     <ImageView
         android:id="@+id/tab_profile_iv"
         android:layout_width="60dp"
@@ -15,13 +33,14 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_android_circle"
         tools:ignore="ContentDescription"/>
+    -->
 
-    <!--Close button-->
+    <!--Close button
     <ImageView
         android:id="@+id/close_btn"
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:layout_marginLeft="40dp"
         android:src="@drawable/ic_close"
-        tools:ignore="ContentDescription"/>
-</RelativeLayout>
+        tools:ignore="ContentDescription"/>-->
+</LinearLayout>
